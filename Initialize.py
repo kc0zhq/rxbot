@@ -1,6 +1,7 @@
 import string
 import urllib, json
 import socket
+import ssl
 import sys
 import pip
 import sqlite3
@@ -37,7 +38,8 @@ def reconnect():
 
 def openSocket():
     global s
-    s = socket.socket()
+    olds = socket.socket()
+    s = ssl.wrap_socket(olds)
     s.connect(("irc.chat.twitch.tv", PORT))
     s.send(("PASS " + BOT_OAUTH + "\r\n").encode("utf-8"))
     s.send(("NICK " + BOT_NAME + "\r\n").encode("utf-8"))
